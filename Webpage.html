@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AOD Clan Hangout</title>
+  <style>
+    /* CSS styles for the page */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-image: url(images/background.png);
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+    
+    .container {
+      margin-top: 100px;
+    }
+    
+    .button {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 style="color:white;">Welcome To The AOD Hangout Room</h1>
+    <button class="button" id="loginBtn">Login</button>
+    <button class="button" id="registerBtn">Register</button>
+  </div>
+  
+  <script>  
+    // Event listener for the Login button
+    document.getElementById("loginBtn").addEventListener("click", function() {
+      // Redirect the user to the login page
+      window.location.href = "Login.html";
+    });
+    
+    // Event listener for the Register button
+    document.getElementById("registerBtn").addEventListener("click", function() {
+      // Redirect the user to the register page
+      window.location.href = "Register.html";
+    });
+    
+    // JavaScript code specific to Login.html
+    // ... (Add your code for the Login page)
+    
+    // JavaScript code specific to Register.html
+    // ... (Add your code for the Register page)
+  </script>
+</body>
+</html>

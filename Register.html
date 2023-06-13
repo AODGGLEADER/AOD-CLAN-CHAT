@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registration Menu</title>
+  <style>
+    body {
+      background-color: #111111;
+      color: #ffffff;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+      margin-top: 200px;
+      padding: 40px;
+      border: 4px solid #000000;
+      background-color: #222222;
+      width: 400px;
+      margin: 0 auto;
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+    }
+
+    .container input[type="text"],
+    .container input[type="password"] {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: none;
+      background-color: #444444;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .container input[type="submit"] {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      border: none;
+      background-color: #777777;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .container input[type="submit"]:hover {
+      background-color: #999999;
+    }
+
+    .back-box {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      cursor: pointer;
+      color: #ffffff;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back-box" onclick="goBack()">&larr; Back</div>
+    <h2>Registration Menu</h2>
+    <form id="registerForm">
+      <input type="text" id="username" placeholder="Username" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <input type="submit" value="Register">
+    </form>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = 'Webpage.html';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      // Check if username is too similar to existing usernames
+      var existingData = localStorage.getItem('registrationData');
+      if (existingData) {
+        existingData = JSON.parse(existingData);
+        var existingUsername = existingData.username;
+
+        // Calculate the similarity score between usernames
+        var similarityScore = calculateSimilarityScore(username, existingUsername);
+
+        // Define a threshold for similarity
+        var similarityThreshold = 0.7;
+
+        if (similarityScore > similarityThreshold) {
+          // Username is too similar to an existing username
+          alert('This username is too similar to another person. Please try a different username.');
+          return;
+        }
+      }
+
+      // Generate API token
+      var apiToken = generateAPIToken();
+
+      // Save registration details in local storage
+      var registrationData = {
+        username: username,
+        password: password,
+        apiToken: apiToken
+      };
+      localStorage.setItem('registrationData', JSON.stringify(registrationData));
+
+      // Redirect to Login.html
+      window.location.href = 'Login.html';
+    });
+
+    function calculateSimilarityScore(str1, str2) {
+      var editDistance = levenshteinDistance(str1, str2);
+      var maxLength = Math.max(str1.length, str2.length);
+      return 1 - editDistance / maxLength;
+    }
+
+    function levenshteinDistance(str1, str2) {
+      var matrix = Array(str1.length + 1)
+        .fill(null)
+        .map(() => Array(str2.length + 1).fill(null));
+
+      for (let i = 0; i <= str1.length; i++) {
+        matrix[i][0] = i;
+      }
+
+      for (let j = 0; j <= str2.length; j++) {
+        matrix[0][j] = j;
+      }
+
+      for (let i = 1; i <= str1.length; i++) {
+        for (let j = 1; j <= str2.length; j++) {
+          const cost = str1[i - 1] === str2[j - 1] ? 0 : 1;
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j] + 1,
+            matrix[i][j - 1] + 1,
+            matrix[i - 1][j - 1] + cost
+          );
+        }
+      }
+
+      return matrix[str1.length][str2.length];
+    }
+
+    function generateAPIToken() {
+      // Generate a random string of numbers
+      var characters = '0123456789';
+      var tokenLength = 10;
+      var token = '';
+      for (var i = 0; i < tokenLength; i++) {
+        var randomIndex = Math.floor(Math.random() * characters.length);
+        token += characters.charAt(randomIndex);
+      }
+      return token;
+    }
+  </script>
+</body>
+</html>

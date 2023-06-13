@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Menu</title>
+  <style>
+    body {
+      background-color: #111111;
+      color: #ffffff;
+    }
+
+    .container {
+      position: relative;
+      text-align: center;
+      margin-top: 200px;
+      padding: 40px;
+      border: 4px solid #000000;
+      background-color: #222222;
+      width: 400px;
+      margin: 0 auto;
+    }
+
+    .container h2 {
+      margin-bottom: 20px;
+    }
+
+    .container input[type="text"],
+    .container input[type="password"] {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 20px;
+      border: none;
+      background-color: #444444;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
+
+    .container input[type="submit"] {
+      width: 100%;
+      padding: 15px;
+      margin-top: 20px;
+      border: none;
+      background-color: #777777;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+    .container input[type="submit"]:hover {
+      background-color: #999999;
+    }
+
+    .back-box {
+      position: absolute;
+      left: 20px;
+      top: 20px;
+      cursor: pointer;
+      color: #ffffff;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="back-box" onclick="goBack()">&larr; Back</div>
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Username" required><br>
+      <input type="password" id="password" placeholder="Password" required><br>
+      <input type="submit" value="Login">
+    </form>
+  </div>
+
+  <script>
+    function goBack() {
+      window.location.href = 'Webpage.html';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form submission
+      var username = document.getElementById('username').value;
+      var password = document.getElementById('password').value;
+
+      // Retrieve registration details from local storage
+      var registrationData = localStorage.getItem('registrationData');
+      if (registrationData) {
+        registrationData = JSON.parse(registrationData);
+        var registeredUsername = registrationData.username;
+        var registeredPassword = registrationData.password;
+        var apiToken = registrationData.apiToken;
+
+        if (username === registeredUsername && password === registeredPassword) {
+          // Successful login
+          console.log('Login successful');
+          console.log('Username:', username);
+          console.log('API Token:', apiToken);
+          // Redirect to webpage.html
+          window.location.href = 'Website.html';
+        } else {
+          // Invalid credentials
+          console.log('Invalid username or password');
+          alert('Account username or password is incorrect.');
+        }
+      } else {
+        // No registration data found
+        console.log('No registration data found');
+        alert('No account found. Please register first.');
+      }
+    });
+  </script>
+</body>
+</html>
